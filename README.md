@@ -16,3 +16,17 @@ My personal NeoVim setup to make NeoVim my great text editor & IDE
 ## Configure capslock as escape
 
 1. (On Linux) `gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']`
+
+## Setting up a terminal background
+
+1. Install Ghostty: `sudo apt install ghostty`
+2. Open config: `nvim ~/.config/ghostty/config`
+3. Add the following:
+
+```
+background-image = ~/.config/nvim/bg2.jpg
+background-image-opacity = 0.15
+background-opacity = 0.90
+```
+
+1. Restart Ghostty

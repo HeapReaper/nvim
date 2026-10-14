@@ -1,9 +1,18 @@
-# 💤 LazyVim
+# 💤 Neovim with LazyVim
 
-A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
-Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
+My personal NeoVim setup to make NeoVim my great text editor & IDE
 
-For making capslock work as ESC on Linux (Ubuntu), run:
-```
-gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
-```
+## Installing NeoVim
+
+1. `sudo apt install -y git curl unzip ripgrep fd-find neovim`
+
+## Configure NeoVim to use this config
+
+1. `mkdir -p ~/nvim-backup`
+2. `cp -a ~/.config/nvim ~/nvim-backup/config-nvim 2>/dev/null || true`
+3. Optional: `rm -rf ~/.config/nvim`
+4. `git clone https://codeberg.org/HeapReaper/nvim-config.git ~/.config/nvim`
+
+## Configure capslock as escape
+
+1. (On Linux) `gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']`

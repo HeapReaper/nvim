@@ -19,3 +19,8 @@ vim.keymap.set("i", "<M-e>", "<Esc>")
 
 -- Exit mode with alt e
 vim.keymap.set("t", "<M-e>", [[<C-\><C-n>]])
+
+-- Exit terminal mode with Escape
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], {
+  desc = "Exit terminal mode",
+})

@@ -23,10 +23,14 @@ My personal NeoVim setup to make NeoVim my great text editor & IDE
 2. Open config: `nvim ~/.config/ghostty/config`
 3. Add the following:
 
+
+
+
 ```
-background-image = ~/.config/nvim/bg2.jpg
-background-image-opacity = 0.15
-background-opacity = 0.90
+background-image = /home/heapreaper/.config/nvim/bg2.jpg
+background-image-fit = cover
+background-image-position = center
+background-opacity = 1
 ```
 
 1. Restart Ghostty

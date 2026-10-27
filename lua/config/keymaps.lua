@@ -24,3 +24,8 @@ vim.keymap.set("t", "<M-e>", [[<C-\><C-n>]])
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], {
   desc = "Exit terminal mode",
 })
+
+-- Search text in the whole project with Ctrl+F
+vim.keymap.set("n", "<C-f>", LazyVim.pick("grep"), {
+  desc = "Grep (Root Dir)",
+})

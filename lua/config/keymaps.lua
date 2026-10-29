@@ -29,3 +29,9 @@ vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], {
 vim.keymap.set("n", "<C-f>", LazyVim.pick("grep"), {
   desc = "Grep (Root Dir)",
 })
+
+-- Restore layout (neo-tree | code | 2 terminals) with <leader>L
+-- set here so it overrides LazyVim's default <leader>L (changelog)
+vim.keymap.set("n", "<leader>L", function()
+  require("layout").build()
+end, { desc = "Layout herstellen" })

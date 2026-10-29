@@ -28,3 +28,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 require("config.layout")
+
+-- Prevents mini.files opening when opening a map with nvim .
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

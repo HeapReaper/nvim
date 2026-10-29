@@ -51,16 +51,40 @@ function M.resize()
   end
 end
 
+local function is_code_buf(buf)
+  return api.nvim_buf_is_valid(buf)
+    and vim.bo[buf].buftype == ""
+    and vim.bo[buf].filetype ~= "neo-tree"
+    and vim.fn.isdirectory(api.nvim_buf_get_name(buf)) == 0
+end
+
 function M.build()
   pcall(vim.cmd, "Neotree close")
+  -- vanuit het codevenster herbouwen, zodat de geopende file blijft staan
+  if valid(M.wins.code) then
+    api.nvim_set_current_win(M.wins.code)
+  end
   vim.cmd("silent! only")
 
-  -- codevenster: lege buffer als het een map/speciale buffer is
-  local buf = api.nvim_get_current_buf()
-  if vim.bo[buf].buftype ~= "" or vim.fn.isdirectory(api.nvim_buf_get_name(buf)) == 1 then
-    vim.cmd("enew")
+  -- overgebleven venster kan een terminal zijn geweest: opties terugzetten
+  local win = api.nvim_get_current_win()
+  if vim.fn.has("nvim-0.10") == 1 then
+    vim.wo[win].winfixbuf = false
   end
-  M.wins.code = api.nvim_get_current_win()
+  vim.wo[win].winfixheight = false
+  vim.wo[win].number = vim.go.number
+  vim.wo[win].relativenumber = vim.go.relativenumber
+
+  -- codevenster: laatst gebruikte file, anders lege buffer
+  if not is_code_buf(api.nvim_get_current_buf()) then
+    local last = M.bufs.code
+    if last and is_code_buf(last) then
+      api.nvim_win_set_buf(win, last)
+    else
+      vim.cmd("enew")
+    end
+  end
+  M.wins.code = win
 
   -- twee terminals onder de code
   vim.cmd("botright " .. TERM_HEIGHT .. "split")
@@ -128,9 +152,25 @@ function M.setup()
   end
 
   vim.api.nvim_create_user_command("LayoutReset", M.build, {})
-  vim.keymap.set("n", "<leader>L", M.build, { desc = "Layout resetten" })
+  -- Alt+0: layout herstellen, ook vanuit terminal/insert
+  vim.keymap.set("n", "<A-0>", M.build, { desc = "Layout herstellen" })
+  vim.keymap.set(
+    { "t", "i" },
+    "<A-0>",
+    "<C-\\><C-n><Cmd>lua require('layout').build()<CR>",
+    { desc = "Layout herstellen" }
+  )
 
   vim.api.nvim_create_autocmd("VimResized", { callback = M.resize })
+
+  -- laatst geopende file onthouden voor het codevenster
+  vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(ev)
+      if is_code_buf(ev.buf) then
+        M.bufs.code = ev.buf
+      end
+    end,
+  })
 
   -- automatisch opbouwen bij `nvim` of `nvim .`
   local function auto()
